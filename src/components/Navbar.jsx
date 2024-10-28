@@ -3,14 +3,23 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Menu, Search, Moon, Sun } from "lucide-react";
+import { Menu, Search, Moon, Sun, User, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useAuth } from "@/contexts/AuthContext";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { LogoutButton } from "@/components/LogoutButton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
+  const { isAuthenticated, logout } = useAuth();
   const [isOpen, setIsOpen] = React.useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
@@ -61,9 +70,31 @@ export default function Navbar() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <Link href={"/login"}>
-                <Button variant="outline">Login</Button>
-              </Link>
+              {isAuthenticated ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <User className="h-[1.2rem] w-[1.2rem]" />
+                      <span className="sr-only">User menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile">Profile</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/settings">Settings</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={logout}>
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link href="/Sign-in">
+                  <Button variant="outline">Sign in</Button>
+                </Link>
+              )}
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -97,9 +128,27 @@ export default function Navbar() {
                       className="pl-8 w-full"
                     />
                   </div>
-                  <Button variant="outline" className="w-full">
-                    Login
-                  </Button>
+                  {isAuthenticated ? (
+                    <>
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href="/profile">Profile</Link>
+                      </Button>
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href="/settings">Settings</Link>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={logout}
+                      >
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <Button variant="outline" className="w-full" asChild>
+                      <Link href="/login">Login</Link>
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     className="w-full"

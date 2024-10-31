@@ -47,7 +47,7 @@ export default function Dashboard() {
       {blogs.length > 0 ? (
         <BlogList blogs={blogs} />
       ) : (
-        <p className="text-center">You haven't created any blogs yet.</p>
+        <p className="text-center">You haven&rsquo;t created any blogs yet.</p>
       )}
     </div>
   );

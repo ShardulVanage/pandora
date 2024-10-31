@@ -1,27 +1,40 @@
-import { cn } from "@/lib/utils";
-import React, { useRef, useState } from "react";
+"use client";
+
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { IconPlus } from "@tabler/icons-react";
+import { PlusIcon } from "lucide-react";
 
-const mainVariant = {
+const gridVariants = {
   initial: {
-    x: 0,
-    y: 0,
+    opacity: 0.4,
+    scale: 0.98,
   },
-  animate: {
-    x: 20,
-    y: -20,
-    opacity: 0.9,
+  hover: {
+    opacity: 0.5,
+    scale: 1,
   },
 };
 
-const secondaryVariant = {
+const buttonVariants = {
   initial: {
-    opacity: 0,
+    y: 0,
+    boxShadow:
+      "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
   },
-  animate: {
-    opacity: 1,
+  hover: {
+    y: -5,
+    boxShadow:
+      "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+    transition: { type: "spring", stiffness: 400, damping: 10 },
+  },
+};
+
+const iconVariants = {
+  initial: { rotate: 0 },
+  hover: {
+    rotate: 90,
+    transition: { type: "spring", stiffness: 200, damping: 10 },
   },
 };
 
@@ -33,70 +46,101 @@ export const FileUpload = ({ onChange }) => {
   };
 
   return (
-    <Card className="w-full max-w-sm py-12">
+    <Card className="w-full max-w-sm p-8 bg-background overflow-hidden">
       <motion.div
         onClick={handleCreateBlog}
-        whileHover="animate"
-        className="p-10 group/blog block rounded-lg cursor-pointer w-full relative overflow-hidden"
+        className="relative cursor-pointer"
+        initial="initial"
+        whileHover="hover"
       >
-        <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
-          <GridPattern />
-        </div>
-        <div className="flex flex-col items-center justify-center">
-          <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-base">
-            Create Blogs
-          </p>
-          <p className="relative z-20 font-sans font-normal text-neutral-400 dark:text-neutral-400 text-xs mt-2">
-            Click the button below to create a new blog
-          </p>
-          <div className="relative w-full mt-10 max-w-xl mx-auto">
-            <motion.div
-              layoutId="blog-create"
-              variants={mainVariant}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 20,
+        <motion.div className="absolute inset-0 z-0" variants={gridVariants}>
+          <div className="relative hidden h-full flex-col  border-4 p-10 text-primary lg:flex ">
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat p-2"
+              style={{
+                backgroundImage: `url('https://res.cloudinary.com/dtsuvx8dz/image/upload/v1729578216/yzqddqsqyqxrdivm8wqk.svg')`,
               }}
-              className={cn(
-                "relative group-hover/blog:shadow-2xl z-40 bg-white dark:bg-neutral-900 flex items-center justify-center h-32 mt-4 w-full max-w-[8rem] mx-auto rounded-md",
-                "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]"
-              )}
             >
-              <IconPlus className="h-4 w-4 text-neutral-600 dark:text-neutral-300" />
-            </motion.div>
-
-            <motion.div
-              variants={secondaryVariant}
-              className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-30 bg-transparent flex items-center justify-center h-32 mt-4 w-full max-w-[8rem] mx-auto rounded-md"
-            ></motion.div>
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden dark:block p-2 "
+                style={{
+                  backgroundImage: `url('https://res.cloudinary.com/dtsuvx8dz/image/upload/v1729578474/zovuxh6cbtgwmbbqryns.svg')`,
+                }}
+              />
+            </div>
           </div>
-        </div>
+        </motion.div>
+        <motion.div
+          className="relative z-10  rounded-xl p-8"
+          variants={buttonVariants}
+        >
+          <div className="flex flex-col items-center text-center space-y-4">
+            <motion.div
+              className="bg-foreground rounded-full p-4"
+              variants={iconVariants}
+            >
+              <PlusIcon className="w-8 h-8 text-background" />
+            </motion.div>
+            <h2 className="text-2xl font-bold text-foreground">Create Blog</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300 max-w-[200px]">
+              Click here to start your new blog post and share your ideas with
+              the world
+            </p>
+          </div>
+        </motion.div>
       </motion.div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={onChange}
+        className="hidden"
+        accept="image/*"
+      />
     </Card>
   );
 };
 
-export function GridPattern() {
-  const columns = 41;
-  const rows = 11;
+const GridPattern = () => {
   return (
-    <div className="flex bg-gray-200/70 dark:bg-neutral-900 flex-shrink-0 flex-wrap justify-center items-center gap-x-px gap-y-px  scale-105">
-      {Array.from({ length: rows }).map((_, row) =>
-        Array.from({ length: columns }).map((_, col) => {
-          const index = row * columns + col;
-          return (
-            <div
-              key={`${col}-${row}`}
-              className={`w-10 h-10 flex flex-shrink-0 rounded-[2px] ${
-                index % 2 === 0
-                  ? "bg-gray-50 dark:bg-neutral-950"
-                  : "bg-gray-50 dark:bg-neutral-950 shadow-[0px_0px_1px_3px_rgba(255,255,255,1)_inset] dark:shadow-[0px_0px_1px_3px_rgba(0,0,0,1)_inset]"
-              }`}
-            />
-          );
-        })
-      )}
-    </div>
+    <svg
+      className="absolute inset-0 w-full h-full"
+      xmlns="http://www.w3.org/2000/svg"
+      width="100%"
+      height="100%"
+      fill="none"
+    >
+      <defs>
+        <pattern
+          id="smallGrid"
+          width="8"
+          height="8"
+          patternUnits="userSpaceOnUse"
+        >
+          <path
+            d="M 8 0 L 0 0 0 8"
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity="0.04"
+            strokeWidth="0.5"
+          />
+        </pattern>
+        <pattern
+          id="largeGrid"
+          width="32"
+          height="32"
+          patternUnits="userSpaceOnUse"
+        >
+          <rect width="32" height="32" fill="url(#smallGrid)" />
+          <path
+            d="M 32 0 L 0 0 0 32"
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity="0.08"
+            strokeWidth="1"
+          />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#largeGrid)" />
+    </svg>
   );
-}
+};

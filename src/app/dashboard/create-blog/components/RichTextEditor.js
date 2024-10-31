@@ -266,7 +266,7 @@ export default function RichTextEditor({ editor }) {
           </ToolbarButton>
         </div>
 
-        <EditorContent editor={editor} />
+        <EditorContent  editor={editor} />
       </div>
     </div>
   )

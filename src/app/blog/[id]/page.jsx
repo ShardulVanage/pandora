@@ -64,7 +64,7 @@ export default function BlogPage() {
             src={blog.img}
             alt={blog.title}
             fill
-            className="object-cover rounded-lg"
+            className="object-fit rounded-lg bg-white"
           />
         </div>
       )}

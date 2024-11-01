@@ -20,8 +20,8 @@ function Hero() {
         )}
       />
       <div className="z-10 flex max-w-4xl flex-col items-center text-center">
-        <h1 className="mb-6 text-4xl font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl inline-flex">
-          Welcome to <AnimatedLogo />
+        <h1 className="mb-6 text-4xl font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl sm:inline-flex sm:flex-row flex-col">
+          <span> Welcome to</span> <AnimatedLogo />
         </h1>
         <p className="mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
           Explore the depths of knowledge, uncover hidden gems, and embark on a

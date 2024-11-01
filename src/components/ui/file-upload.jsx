@@ -54,7 +54,7 @@ export const FileUpload = ({ onChange }) => {
         whileHover="hover"
       >
         <motion.div className="absolute inset-0 z-0" variants={gridVariants}>
-          <div className="relative hidden h-full flex-col  border-4 p-10 text-primary lg:flex ">
+          <div className="relative  h-full flex-col  border-4 p-10 text-primary lg:flex ">
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat p-2"
               style={{
@@ -62,7 +62,7 @@ export const FileUpload = ({ onChange }) => {
               }}
             >
               <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden dark:block p-2 "
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat  dark:block p-2 "
                 style={{
                   backgroundImage: `url('https://res.cloudinary.com/dtsuvx8dz/image/upload/v1729578474/zovuxh6cbtgwmbbqryns.svg')`,
                 }}

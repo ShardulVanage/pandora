@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { client } from '@/lib/pocketbase';
 import BlogList from './components/BlogList';
+import { FileUpload } from '@/components/ui/file-upload';
+import Link from 'next/link';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -47,7 +49,9 @@ export default function Dashboard() {
       {blogs.length > 0 ? (
         <BlogList blogs={blogs} />
       ) : (
-        <p className="text-center">You haven&rsquo;t created any blogs yet.</p>
+        <Link href="/dashboard/create-blog">
+         <FileUpload/>
+      </Link>
       )}
     </div>
   );

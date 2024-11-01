@@ -10,24 +10,25 @@ import { UserAuthForm } from "./components/user-auth-form"
 export default function AuthenticationPage() {
   return (
     <>
-      <div className="md:hidden container">
+      <div className="md:hidden container py-8 px-3">
         <img
           src="https://res.cloudinary.com/dtsuvx8dz/image/upload/v1729578216/yzqddqsqyqxrdivm8wqk.svg"
           width={1280}
           height={843}
           alt="Authentication"
-          className="block dark:hidden"
+          className="block dark:hidden  border-4 border-dashed"
         />
+       
         <img
           src="https://res.cloudinary.com/dtsuvx8dz/image/upload/v1729578474/zovuxh6cbtgwmbbqryns.svg"
           width={1280}
           height={843}
           alt="Authentication"
-          className="hidden dark:block"
+          className="hidden dark:block  border-4 border-dashed"
         />
       </div>
        <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 px-12 lg:px-0">
-        <div className="relative hidden h-full flex-col  border-4 p-10 text-primary lg:flex ">
+        <div className="relative hidden h-full flex-col  border-4 border-dashed p-10 text-primary lg:flex ">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm p-2"
             style={{

@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import AnimatedLogo from "./ui/letter-pullup";
 
 export default function Navbar() {
   const { isAuthenticated, logout } = useAuth();
@@ -47,7 +48,7 @@ export default function Navbar() {
             className="flex-shrink-0"
           >
             <Link href="/" className="text-2xl font-bold text-primary">
-              PANDORA
+              <AnimatedLogo delay={0} />
             </Link>
           </motion.div>
           <div className="hidden md:flex items-center space-x-4">

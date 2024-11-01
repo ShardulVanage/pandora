@@ -56,12 +56,12 @@ export default function BlogCard({ blog }) {
               </Button>
             </motion.div>
           </Link>
-          <Link href={`/blog/edit/${blog.id}`} passHref>
+          <Link href={`dashboard/edit/${blog.id}`} passHref>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="outline" size="icon">
+              
                 <PencilIcon className="w-4 h-4" />
                 <span className="sr-only">Edit</span>
-              </Button>
+              
             </motion.div>
           </Link>
         </CardFooter>

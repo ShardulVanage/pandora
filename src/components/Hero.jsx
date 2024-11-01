@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import AnimatedGridPattern from "./ui/AnimatedGridPattern";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Bookmark, TrendingUp } from "lucide-react";
+import AnimatedLogo from "@/components/ui/letter-pullup";
 
 function Hero() {
   return (
@@ -19,8 +20,8 @@ function Hero() {
         )}
       />
       <div className="z-10 flex max-w-4xl flex-col items-center text-center">
-        <h1 className="mb-6 text-4xl font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl">
-          Welcome to PANDORA
+        <h1 className="mb-6 text-4xl font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl inline-flex">
+          Welcome to <AnimatedLogo />
         </h1>
         <p className="mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
           Explore the depths of knowledge, uncover hidden gems, and embark on a

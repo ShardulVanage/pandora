@@ -112,7 +112,7 @@ export function UserAuthForm({ className, ...props }) {
           </Button>
         </div>
         <p className="px-8 pt-2 text-center text-sm text-muted-foreground">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href={"/Sign-up"} className="font-semibold text-foreground">
             Sign up
           </Link>{" "}

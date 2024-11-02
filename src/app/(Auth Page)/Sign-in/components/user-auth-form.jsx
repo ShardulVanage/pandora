@@ -10,12 +10,20 @@ import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 
 export function UserAuthForm({ className, ...props }) {
-  const { login } = useAuth(); // Using the login function from auth context
+  const { login, authWithOAuth } = useAuth();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [loadingProvider, setLoadingProvider] = React.useState(null);
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
   });
+
+  // Reset loading state when component unmounts
+  React.useEffect(() => {
+    return () => {
+      setLoadingProvider(null);
+    };
+  }, []);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -30,15 +38,31 @@ export function UserAuthForm({ className, ...props }) {
     setIsLoading(true);
 
     try {
-      // Using the login function from AuthContext instead of direct PocketBase call
       await login(formData.email, formData.password);
-
-      // No need for toast or router.push here as they're handled in the AuthContext
     } catch (error) {
-      // Optional: You can still handle specific form-related errors here if needed
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleOAuthLogin = async (provider) => {
+    setLoadingProvider(provider);
+
+    // Set up a timeout to reset the loading state
+    const timeoutId = setTimeout(() => {
+      setLoadingProvider(null);
+    }, 6000); // Reset after 1 minute max
+
+    try {
+      const success = await authWithOAuth(provider);
+      clearTimeout(timeoutId);
+      if (!success) {
+        setLoadingProvider(null);
+      }
+    } catch (error) {
+      clearTimeout(timeoutId);
+      setLoadingProvider(null);
     }
   };
 
@@ -88,7 +112,7 @@ export function UserAuthForm({ className, ...props }) {
           </Button>
         </div>
         <p className="px-8 pt-2 text-center text-sm text-muted-foreground">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <Link href={"/Sign-up"} className="font-semibold text-foreground">
             Sign up
           </Link>{" "}
@@ -104,16 +128,24 @@ export function UserAuthForm({ className, ...props }) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
+      <Button
+        variant="outline"
+        type="button"
+        onClick={() => handleOAuthLogin("github")}
+      >
+        {loadingProvider === "github" ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
           <Icons.gitHub className="mr-2 h-4 w-4" />
         )}{" "}
         GitHub
       </Button>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
+      <Button
+        variant="outline"
+        type="button"
+        onClick={() => handleOAuthLogin("google")}
+      >
+        {loadingProvider === "google" ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
           <Icons.google className="mr-2 h-4 w-4" />

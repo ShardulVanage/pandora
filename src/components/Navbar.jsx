@@ -9,7 +9,12 @@ import { useAuth } from "@/contexts/AuthContext";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { LogoutButton } from "@/components/LogoutButton";
 import {
   DropdownMenu,
@@ -63,6 +68,7 @@ export default function Navbar() {
                   type="search"
                   placeholder="Search..."
                   className="pl-8 w-[200px]"
+                  aria-label="Search"
                 />
               </div>
             </motion.div>
@@ -86,9 +92,7 @@ export default function Navbar() {
                     <DropdownMenuItem asChild>
                       <Link href="/dashboard">Dashboard</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/settings">Settings</Link>
-                    </DropdownMenuItem>
+
                     <DropdownMenuItem onSelect={logout}>
                       Logout
                     </DropdownMenuItem>
@@ -105,24 +109,57 @@ export default function Navbar() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <Button variant="outline" size="icon" onClick={toggleTheme}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${
+                  resolvedTheme === "dark" ? "light" : "dark"
+                } theme`}
+              >
                 {resolvedTheme === "dark" ? (
                   <Sun className="h-[1.2rem] w-[1.2rem]" />
                 ) : (
                   <Moon className="h-[1.2rem] w-[1.2rem]" />
                 )}
-                <span className="sr-only">Toggle theme</span>
               </Button>
             </motion.div>
           </div>
           <div className="md:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="px-2" aria-label="Menu">
-                  <Menu className="h-6 w-6" />
-                </Button>
+                <div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <User className="h-[1.2rem] w-[1.2rem]" />
+                        <span className="sr-only">User menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <Link href="/profile">Profile</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard">Dashboard</Link>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem onSelect={logout}>
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <Button
+                    variant="ghost"
+                    className="px-2"
+                    aria-label="Open menu"
+                  >
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                </div>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetTitle></SheetTitle>
                 <div className="flex flex-col gap-4 py-4">
                   <div className="relative">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -130,16 +167,11 @@ export default function Navbar() {
                       type="search"
                       placeholder="Search..."
                       className="pl-8 w-full"
+                      aria-label="Search"
                     />
                   </div>
                   {isAuthenticated ? (
                     <>
-                      <Button variant="outline" className="w-full" asChild>
-                        <Link href="/profile">Profile</Link>
-                      </Button>
-                      <Button variant="outline" className="w-full" asChild>
-                        <Link href="/settings">Settings</Link>
-                      </Button>
                       <Button
                         variant="outline"
                         className="w-full"
@@ -157,6 +189,9 @@ export default function Navbar() {
                     variant="outline"
                     className="w-full"
                     onClick={toggleTheme}
+                    aria-label={`Switch to ${
+                      resolvedTheme === "dark" ? "light" : "dark"
+                    } theme`}
                   >
                     {resolvedTheme === "dark" ? (
                       <>

@@ -5,10 +5,11 @@ import AnimatedGridPattern from "./ui/AnimatedGridPattern";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Bookmark, TrendingUp } from "lucide-react";
 import AnimatedLogo from "@/components/ui/letter-pullup";
+import { BackgroundLines } from "./ui/background-lines";
 
 function Hero() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden rounded-lg  bg-background px-4 py-20 ">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden rounded-lg  bg-background px-4  ">
       <AnimatedGridPattern
         numSquares={30}
         maxOpacity={0.1}
@@ -19,6 +20,7 @@ function Hero() {
           "inset-x-0 inset-y-[-50%] h-[200%] skew-y-12"
         )}
       />
+      {/* <BackgroundLines className="relative z-20 flex items-center justify-center w-screen h-screen flex-col px-4 bg-transparent dark:bg-transparent"> */}
       <div className="z-10 flex max-w-4xl flex-col items-center text-center">
         <h1 className="mb-6 text-4xl font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl sm:inline-flex sm:flex-row flex-col">
           <span> Welcome to</span> <AnimatedLogo />
@@ -27,6 +29,7 @@ function Hero() {
           Explore the depths of knowledge, uncover hidden gems, and embark on a
           journey of discovery through our curated articles and insights.
         </p>
+
         <div className="flex flex-wrap justify-center gap-4">
           <Button size="lg" asChild>
             <Link href="/blog">
@@ -38,6 +41,7 @@ function Hero() {
           </Button>
         </div>
       </div>
+      {/* </BackgroundLines> */}
     </div>
   );
 }

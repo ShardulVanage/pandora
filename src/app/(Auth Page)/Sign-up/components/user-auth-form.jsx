@@ -10,12 +10,22 @@ import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 
 export function UserAuthForm({ className, ...props }) {
-  const { register } = useAuth();
+  const { register, authWithOAuth } = useAuth();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [oAuthLoading, setOAuthLoading] = React.useState({
+    github: false,
+    google: false,
+  });
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
     passwordConfirm: "",
+  });
+
+  // Refs to store timeouts
+  const timeoutRefs = React.useRef({
+    github: null,
+    google: null,
   });
 
   const handleInputChange = (e) => {
@@ -24,6 +34,14 @@ export function UserAuthForm({ className, ...props }) {
       ...prev,
       [id]: value,
     }));
+  };
+
+  // Function to clear timeout for a specific provider
+  const clearProviderTimeout = (provider) => {
+    if (timeoutRefs.current[provider]) {
+      clearTimeout(timeoutRefs.current[provider]);
+      timeoutRefs.current[provider] = null;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -42,6 +60,43 @@ export function UserAuthForm({ className, ...props }) {
       setIsLoading(false);
     }
   };
+
+  const handleOAuthSignIn = async (provider) => {
+    // Clear any existing timeout for this provider
+    clearProviderTimeout(provider);
+
+    setOAuthLoading((prev) => ({ ...prev, [provider]: true }));
+
+    // Set timeout to reset loading state after 6 seconds
+    timeoutRefs.current[provider] = setTimeout(() => {
+      setOAuthLoading((prev) => ({ ...prev, [provider]: false }));
+    }, 6000); // 6 seconds timeout
+
+    try {
+      const success = await authWithOAuth(provider);
+      if (!success) {
+        // Clear timeout and reset loading state if auth was not successful
+        clearProviderTimeout(provider);
+        setOAuthLoading((prev) => ({ ...prev, [provider]: false }));
+      }
+    } catch (error) {
+      console.error(`${provider} OAuth error:`, error);
+      clearProviderTimeout(provider);
+      setOAuthLoading((prev) => ({ ...prev, [provider]: false }));
+    }
+  };
+
+  // Cleanup effect
+  React.useEffect(() => {
+    return () => {
+      // Clear all timeouts when component unmounts
+      Object.keys(timeoutRefs.current).forEach((provider) => {
+        clearProviderTimeout(provider);
+      });
+      // Reset loading states
+      setOAuthLoading({ github: false, google: false });
+    };
+  }, []);
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
@@ -123,16 +178,26 @@ export function UserAuthForm({ className, ...props }) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
+      <Button
+        variant="outline"
+        type="button"
+        disabled={oAuthLoading.github}
+        onClick={() => handleOAuthSignIn("github")}
+      >
+        {oAuthLoading.github ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
           <Icons.gitHub className="mr-2 h-4 w-4" />
         )}{" "}
         GitHub
       </Button>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
+      <Button
+        variant="outline"
+        type="button"
+        disabled={oAuthLoading.google}
+        onClick={() => handleOAuthSignIn("google")}
+      >
+        {oAuthLoading.google ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
           <Icons.google className="mr-2 h-4 w-4" />

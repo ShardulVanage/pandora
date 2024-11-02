@@ -6,6 +6,8 @@ import { client } from '@/lib/pocketbase';
 import BlogList from './components/BlogList';
 import { FileUpload } from '@/components/ui/file-upload';
 import Link from 'next/link';
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -36,7 +38,29 @@ export default function Dashboard() {
   }, [user]);
  
   if (loading) {
-    return <div className="text-center mt-8">Loading...</div>;
+    return (
+      <div className="container mx-auto px-4 py-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {[...Array(3)].map((_, index) => (
+          <Card key={index} className="overflow-hidden">
+            <CardHeader className="pb-0">
+              <Skeleton className="h-4 w-24" /> {/* Publication label */}
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Skeleton className="h-48 w-full rounded-lg" /> {/* Image placeholder */}
+              <div className="space-y-2">
+                <Skeleton className="h-6 w-full" /> {/* Title */}
+                <Skeleton className="h-4 w-full" /> {/* First line of description */}
+                <Skeleton className="h-4 w-2/3" /> {/* Second line of description */}
+              </div>
+            </CardContent>
+            <CardFooter className="justify-between">
+              <Skeleton className="h-10 w-32" /> {/* View Full Blog button */}
+              <Skeleton className="h-8 w-8 rounded-full" /> {/* Edit icon */}
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    );
   }
 
   if (error) {
@@ -51,7 +75,7 @@ export default function Dashboard() {
       ) : (
         <Link href="/dashboard/create-blog">
          <FileUpload/>
-      </Link>
+        </Link>
       )}
     </div>
   );

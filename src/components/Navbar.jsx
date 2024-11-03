@@ -131,10 +131,14 @@ export default function Navbar() {
                 <div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <User className="h-[1.2rem] w-[1.2rem]" />
-                        <span className="sr-only">User menu</span>
-                      </Button>
+                      {isAuthenticated ? (
+                        <Button variant="ghost" size="icon">
+                          <User className="h-[1.2rem] w-[1.2rem]" />
+                          <span className="sr-only">User menu</span>
+                        </Button>
+                      ) : (
+                        ""
+                      )}
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
@@ -182,7 +186,7 @@ export default function Navbar() {
                     </>
                   ) : (
                     <Button variant="outline" className="w-full" asChild>
-                      <Link href="/login">Login</Link>
+                      <Link href="/Sign-in">Sign in</Link>
                     </Button>
                   )}
                   <Button

@@ -96,10 +96,10 @@ export default function AllBlogsPage() {
                 
               >
                 {blog.img ? (
-                  <Image
+                  <img
                     src={blog.img}
                     alt={blog.title}
-                    fill
+                    
                     className="object-fit bg-white"
                   />
                 ) : (

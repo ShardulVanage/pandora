@@ -60,10 +60,9 @@ export default function BlogPage() {
       <hr className="my-4 bg-background" />
       {blog.img && (
         <div className="relative w-full max-w-3xl mx-auto h-[400px] mb-8">
-          <Image
+          <img
             src={blog.img}
             alt={blog.title}
-            fill
             className="object-fit rounded-lg bg-white"
           />
         </div>

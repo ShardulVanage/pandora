@@ -22,10 +22,10 @@ export default function BlogCard({ blog }) {
               <motion.div
                
               >
-                <img
+                <Image
                   src={blog.img}
                   alt={blog.title}
-                  
+                  fill
                   className="object-fit  bg-white"
                 />
               </motion.div>

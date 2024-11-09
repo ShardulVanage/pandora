@@ -68,7 +68,7 @@ export default function BlogPage() {
           />
         </div>
       )}
-      <div className="prose max-w-3xl mx-auto text-foreground prose-strong:text-foreground   prose-headings:text-foreground  prose-p:text-foreground prose-pre:bg-foreground prose-pre:text-background">
+      <div className="prose max-w-3xl mx-auto text-foreground prose-strong:text-foreground   prose-headings:text-foreground  prose-p:text-foreground prose-pre:bg-gray-200 dark:prose-pre:bg-gray-800 prose-pre:text-background prose-code:text-foreground">
         <div dangerouslySetInnerHTML={{ __html: blog.content }} className="" />
       </div>
     </div>
